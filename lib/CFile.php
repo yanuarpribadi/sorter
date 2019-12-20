@@ -1,25 +1,17 @@
 <?php
 /**
-* An implementation of var_export() that is compatible with instances
-* of stdClass.
-* @param mixed $variable The variable you want to export
-* @param bool $return If used and set to true, improved_var_export()
-*     will return the variable representation instead of outputting it.
-* @return mixed|null Returns the variable representation when the
-*     return parameter is used and evaluates to TRUE. Otherwise, this
-*     function will return NULL.
+* Opens file to a stream.
 */
 
 class CFile
 {
-	public $var1 = "text var1";
-	/*
-	private $var2 = "text var2";
-	protected $var3 = "text var3";
-	*/
+	//public $var1 = "text var1";
 	
 	// Open a file for read only. File pointer starts at the beginning of the file
-	private $FILE_MODE = "r";
+	const MODE_READONLY = "r";
+	// Open for writing only; place the file pointer at the beginning of the file
+	// and truncate the file to zero length. If the file does not exist, attempt to create it. 
+	const MODE_WRITE = "w";
 	
 	/**
 	* Open a file.
@@ -28,19 +20,19 @@ class CFile
 	* @return mixed|false
 	*	a file pointer resource on success, or FALSE on failure
 	*/
-	public function open($file_name)
+	public static function open($file_name, $mode)
 	{
-		return fopen($file_name, $this->FILE_MODE);
-		/*
-		try
-		{
-			return fopen($file_name, $this->FILE_MODE) or die("Unable to open file!");
-		}
-		catch (Exception $e)
-		{
-			throw new Exception($e->getMessage());
-		}
-		*/
+		return fopen($file_name, $mode);
+	}
+	
+	/**
+	* Close a file.
+	* @param string $file
+	*	a file pointer resource
+	*/
+	public static function close($file)
+	{
+		fclose($file);
 	}
 }
 ?>
