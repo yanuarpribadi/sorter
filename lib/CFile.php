@@ -30,6 +30,8 @@ class CFile
 	*/
 	public function open($file_name)
 	{
+		return fopen($file_name, $this->FILE_MODE);
+		/*
 		try
 		{
 			return fopen($file_name, $this->FILE_MODE) or die("Unable to open file!");
@@ -38,6 +40,7 @@ class CFile
 		{
 			throw new Exception($e->getMessage());
 		}
+		*/
 	}
 }
 ?>

@@ -17,6 +17,6 @@ try
 }
 catch (Exception $e)
 {
-	echo "Failed" ."<br>";
+	echo "Failed catch" ."<br>";
 }
 ?>
