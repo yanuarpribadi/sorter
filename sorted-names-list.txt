@@ -1,12 +1,12 @@
-Annakin Avie
-Annakin Hailey
-Battelle Erna Dorey
-Bellison Selle
-Franzel Flori Chaunce
-Iddins Orson Milka
-Kaspar Odetta Sue
-Kopfen Roy Ketti
-Mapplebeck Madel Bordie
-Micheli Debra
-Monaghan Leonerd Adda Micheli
-Monaghan Leonerd Adda Mitchell
+Avie Annakin
+Hailey Annakin
+Erna Dorey Battelle
+Selle Bellison
+Flori Chaunce Franzel
+Orson Milka Iddins
+Odetta Sue Kaspar
+Roy Ketti Kopfen
+Madel Bordie Mapplebeck
+Debra Micheli
+Leonerd Adda Micheli Monaghan
+Leonerd Adda Mitchell Monaghan

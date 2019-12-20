@@ -1,14 +1,12 @@
 <?php
 require_once "lib/lib.php";
 
-echo "Hello world" ."<br>";
-
 $executionStartTime = microtime(true);
 $sorter = new CNameSorter();
 $sorter->execute();
 $executionEndTime = microtime(true);
 $seconds = $executionEndTime - $executionStartTime;
-echo "<br>". "Execution time: ". $seconds ." second<br>";
+echo "Execution time: ". $seconds ." second<br>";
 /*
 $file = new CFile();
 echo $file->var1 ."<br>";

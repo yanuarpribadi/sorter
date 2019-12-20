@@ -33,9 +33,7 @@ class CNameSorter
 		
 		$i = 0;
 		//echo "<br>". "Names:" ."<br>";
-		//$arr_name = array();
-		$arr_fmt_name = array();
-		//echo "arr_name/arr_fmt_name: " . count($arr_name) ."/". count($arr_fmt_name) ."<br>";
+		$arr_name = array();
 		
 		// read the file line by line
 		//while (($line = CFileText::get_line($file)) !== false)
@@ -51,13 +49,11 @@ class CNameSorter
 			//echo "[". $i ."] ";
 			$i++;
 			//echo "[".$i."] " . $line ."#<br>";
-			//$arr_name[] = $line;
-			//echo "arr_name: " . count($arr_name) ."<br>";
 			
 			$fmt_name = self::format_name($line);
 			//echo $fmt_name ."#<br>";
-			$arr_fmt_name[] = $fmt_name;
-			//echo "arr_fmt_name: " . count($arr_fmt_name) ."<br>";
+			$arr_name[] = $fmt_name;
+			//echo "arr_name: " . count($arr_name) ."<br>";
 		}
 		
 		// close file text
@@ -65,18 +61,21 @@ class CNameSorter
 		
 		// Sort names
 		//$sorter = new CMergeSort();
-		//$arr_fmt_name = $sorter->execute($arr_fmt_name);
-		$arr_fmt_name = (new CMergeSort())->execute($arr_fmt_name);
-		$total = count($arr_fmt_name);
-		echo "<br>". "Result (". $total ."): " ."<br>";
-		//echo "arr_fmt_name.count: " . $total ."<br>";
+		//$arr_name = $sorter->execute($arr_name);
+		$arr_name = (new CMergeSort())->execute($arr_name);
+		$total = count($arr_name);
+		echo "Result (". $total ."): " ."<br>";
+		//echo "arr_name.count: " . $total ."<br>";
 		for ($i = 0; $i < $total; $i++)
 		{
+			$unfmt_name = self::unformat_name($arr_name[$i]);
+			$arr_name[$i] = $unfmt_name;
 			//echo "[". $i ."]";
-			echo $arr_fmt_name[$i] ."#<br>";
+			//echo $arr_name[$i] ."<br>";
+			echo $unfmt_name ."<br>";
 		}
 		
-		self::save_to_file($arr_fmt_name);
+		self::save_to_file($arr_name);
 	}
 	
 	/**
@@ -115,6 +114,25 @@ class CNameSorter
 	}
 	
 	/**
+	* Format name: given names followed by last name.
+	* @param string $name
+	*	formatted name
+	* @return string
+	*	unformatted name
+	*/
+	private static function unformat_name($name)
+	{
+		$arr_result = explode(" ", $name);
+		$result = "";
+		$total = count($arr_result);
+		for($i = 1; $i < $total; $i++)
+			$result = $result . $arr_result[$i] . " ";
+		$result = $result . $arr_result[0];
+		
+		return $result;
+	}
+	
+	/**
 	* Format name: last name followed by given names.
 	* @param string $name
 	*	name from text file
@@ -125,9 +143,9 @@ class CNameSorter
 	{
 		$result = CFileText::save($arr, self::DEST_FILE);
 		if (!$result)
-			echo "Error occured." ."<br>";
+			echo "<br>". "Error occured." ."<br>";
 		else
-			echo "Job done." ."<br>";
+			echo "<br>". "Job done." ."<br>";
 	}
 }
 ?>
