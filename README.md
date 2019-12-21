@@ -11,6 +11,7 @@
 * Use Merge Sort algorithm
 
 ## Merge Sort
+```
 Class: CMergeSort
 ```
 * Divides array in two halves, calls itself for the two halves.
