@@ -5,7 +5,9 @@
 
 class CMergeSort
 {
+	// store array of string for entire process of sorting
 	private $arr;
+	
 	/**
 	* Sort an array ascending.
 	* @param array $values
@@ -15,17 +17,13 @@ class CMergeSort
 	*/
 	public function execute($values)
 	{
-		//echo ">> CMergeSort.execute()" ."<br>";
-		
 		$this->arr = $values;
 		$this->merge_sort(0, count($this->arr) - 1);
 		return $this->arr;
 	}
 	
 	/**
-	* Sort an array ascending.
-	* @param array $this->arr
-	*	an array to be sorted
+	* Divides array in two halves, calls itself for the two halves and then merge them.
 	* @param integer $left
 	*	first index of sub-array
 	* @param integer $right
@@ -33,32 +31,32 @@ class CMergeSort
 	*/
 	private function merge_sort($left, $right)
 	{
-		//echo "$". $left ."/". $right ."<br>";
-		
-		// exit when size = 1
+		// exit when size = 1 (avoid infinite loop)
 		if ($left == $right)
 			return;
 		
-		//echo ">> CMergeSort.merge_sort() ". $left ."/". $right ."<br>";
-		
 		$mid = intval(($left + $right) / 2);
+		// divide the unsorted list into 2 sublists
 		$this->merge_sort($left, $mid);
 		$this->merge_sort($mid + 1, $right);
+		// sort: merge sublists
 		$this->merge($left, $mid, $right);
 	}
 	
 	/**
-	* Sort an array ascending.
-	* @param mixed $this->arr
-	*	an array to be sorted
+	* Sort sub-array ascending, while maintain memory usage.
+	* @param integer $left
+	*	first index of sub-array
+	* @param integer $mid
+	*	mid index of sub-array
+	* @param integer $right
+	*	last index of sub-array
 	* @return mixed
 	*	sorted array
 	*/
 	private function merge($left, $mid, $right)
 	{
-		//echo ">> CMergeSort.merge() ". $left ."/". $mid ."/". $right ."<br>";
-		
-		// v: value, x: index
+		// store index and value for each sub-array (v: value, x: index)
 		$x1 = $left;
 		$x2 = $mid + 1;
 		$v1 = $this->arr[$x1];
@@ -69,55 +67,38 @@ class CMergeSort
 		// $i: index to store sorted value
 		for ($i = $left; $i <= $right; $i++)
 		{
-			//echo "mid/x1/x2/v1/v2: " . $mid ."/". $x1 ."/". $x2 ." [". $v1 ."][". $v2 ."]" ."<br>";
-			
+			// store value to avoid losing
 			if ($i > $x1)
-			{
-				//echo "##if ($i > $x1)" ."#<br>";
 				$temp[$i] = $this->arr[$i];
-			}
 			
+			// condition: 1st sub-array have smaller value
 			if ($x1 <= $mid && ($x2 > $right || $v1 <= $v2))
-			//if (v1 <= v2)
 			{
-				//echo "**i/x1: ". $i ."/". $x1 ."#";
+				// store value when index not equal
 				if ($i != $x1)
-				{
 					$this->arr[$i] = $v1;
-					//echo " != " ."#<br>";
-				}
-				//else
-					//echo " == " ."#<br>";
-					
-				//echo "#if: ". $i ."#". $this->arr[$i] ."#<br>";
+				
 				$x1++;
-				//echo "x1: ". $x1 ."#<br>";
+				
+				// refresh value of 1st sub-array
 				if ($x1 <= $mid)
 				{
+					// get value from temporary if available
 					if (array_key_exists($x1, $temp))
 						$v1 = $temp[$x1];
 					else
 						$v1 = $this->arr[$x1];
-					//echo "v1: ". $v1 ."#<br>";
 				}
 			}
 			else
 			{
-				//echo "**i/x2: ". $i ."/". $x2 ."#";
-				/*
-				$this->arr[$i] = $v2;
-				*/
+				// store value when index not equal
 				if ($i != $x2)
-				{
 					$this->arr[$i] = $v2;
-					//echo " != " ."#<br>";
-				}
-				//else
-					//echo " == " ."#<br>";
 				
-				//$this->arr[$i] = $v2;
-				//echo "#else: ". $i ."#". $this->arr[$i] ."#<br>";
 				$x2++;
+				
+				// refresh value of 2nd sub-array
 				if ($x2 <= $right)
 					$v2 = $this->arr[$x2];
 			}

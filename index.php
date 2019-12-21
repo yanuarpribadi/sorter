@@ -1,20 +1,15 @@
 <?php
 require_once "lib/lib.php";
 
+// get start timestamp
 $executionStartTime = microtime(true);
-$sorter = new CNameSorter();
-$sorter->execute();
+
+CNameSorter::execute();
+
+// get end timestamp
 $executionEndTime = microtime(true);
+
+// show process time
 $seconds = $executionEndTime - $executionStartTime;
 echo "Execution time: ". $seconds ." second<br>";
-/*
-$file = new CFile();
-echo $file->var1 ."<br>";
-
-$ftxt = $file->open("unsorted-names-list.txt");
-if ($ftxt)
-	echo "Success" ."<br>";
-else
-	echo "Failed" ."<br>";
-*/
 ?>

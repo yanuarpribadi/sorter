@@ -30,14 +30,19 @@ class CFileText extends CFile
 	{
 		try
 		{
+			// open file text
 			$file = self::open($file_name, CFile::MODE_WRITE);
 			
+			// save to file
 			$total = count($array);
 			for ($i = 0; $i < $total; $i++)
 			{
 				fwrite($file, ($i == 0 ? "" : "\n") . $array[$i]);
 			}
+			
+			// close file text
 			self::close($file);
+			
 			return true;
 		}
 		catch (Exception $e)

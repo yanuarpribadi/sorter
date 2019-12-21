@@ -18,10 +18,8 @@ class CNameSorter
 	* Source file name: SOURCE_FILE
 	* Destination file name: DEST_FILE
 	*/
-	public function execute()
+	public static function execute()
 	{
-		//echo ">> CNameSorter.execute()" ."<br>";
-		
 		// open file text
 		$file = CFileText::open(self::SOURCE_FILE, CFile::MODE_READONLY);
 		
@@ -31,50 +29,38 @@ class CNameSorter
 			return;
 		}
 		
-		$i = 0;
-		//echo "<br>". "Names:" ."<br>";
 		$arr_name = array();
 		
 		// read the file line by line
-		//while (($line = CFileText::get_line($file)) !== false)
-		while (!feof($file))//->eof())
+		while (!feof($file))
 		{
-			//$line = trim($line);
 			$line = trim(CFileText::get_line($file));
 			
 			// skip to next line if blank
 			if (strlen($line) === 0)
 				continue;
 			
-			//echo "[". $i ."] ";
-			$i++;
-			//echo "[".$i."] " . $line ."#<br>";
-			
 			$fmt_name = self::format_name($line);
-			//echo $fmt_name ."#<br>";
 			$arr_name[] = $fmt_name;
-			//echo "arr_name: " . count($arr_name) ."<br>";
 		}
 		
 		// close file text
 		CFileText::close($file);
 		
-		// Sort names
-		//$sorter = new CMergeSort();
-		//$arr_name = $sorter->execute($arr_name);
+		// sort names
 		$arr_name = (new CMergeSort())->execute($arr_name);
 		$total = count($arr_name);
-		echo "Result (". $total ."): " ."<br>";
-		//echo "arr_name.count: " . $total ."<br>";
+		
+		// show result of sorted names
+		echo "Sorted list of names (". $total ."): " ."<br>";
 		for ($i = 0; $i < $total; $i++)
 		{
 			$unfmt_name = self::unformat_name($arr_name[$i]);
 			$arr_name[$i] = $unfmt_name;
-			//echo "[". $i ."]";
-			//echo $arr_name[$i] ."<br>";
 			echo $unfmt_name ."<br>";
 		}
 		
+		// save result to file
 		self::save_to_file($arr_name);
 	}
 	
@@ -88,28 +74,21 @@ class CNameSorter
 	private static function format_name($name)
 	{
 		$arr_result = explode(" ", $name);
-		//echo "arr_result.count: " . count($arr_result) ."<br>";
 		
 		$total = count($arr_result);
 		// ignore current name with condition:
-		//	below minimum given names (exclude last name)
+		// below minimum given names (exclude last name)
 		if ($total < self::MIN_NAMES + 1)
 			return null;
 		
-		// default: last name
-		$result = $arr_result[$total - 1];
-		
-		// get max given names with condition:
-		//	maximum given names, or given names
-		//	 (exclude last name)
+		// name composition: last name + given names (based on MAX_NAMES)
 		$max = ($total > self::MAX_NAMES + 1 ? self::MAX_NAMES : $total - 1);
-		//echo "max/total: " . $max . "/" . $total . "<br>";
 		
+		// reorder name
+		$result = $arr_result[$total - 1];
 		for($i = 0; $i < $max; $i++)
 			$result = $result . " " . $arr_result[$i];
 		
-		//echo "result: " . $result ."<br>";
-		//echo $result ."<br>";
 		return $result;
 	}
 	
@@ -123,8 +102,10 @@ class CNameSorter
 	private static function unformat_name($name)
 	{
 		$arr_result = explode(" ", $name);
-		$result = "";
 		$total = count($arr_result);
+		
+		// reorder name
+		$result = "";
 		for($i = 1; $i < $total; $i++)
 			$result = $result . $arr_result[$i] . " ";
 		$result = $result . $arr_result[0];
@@ -142,6 +123,8 @@ class CNameSorter
 	private static function save_to_file($arr)
 	{
 		$result = CFileText::save($arr, self::DEST_FILE);
+		
+		// show message
 		if (!$result)
 			echo "<br>". "Error occured." ."<br>";
 		else

@@ -1,12 +1,10 @@
 <?php
 /**
-* Opens file to a stream.
+* Manage file operation.
 */
 
 class CFile
 {
-	//public $var1 = "text var1";
-	
 	// Open a file for read only. File pointer starts at the beginning of the file
 	const MODE_READONLY = "r";
 	// Open for writing only; place the file pointer at the beginning of the file
